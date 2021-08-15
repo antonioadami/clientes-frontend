@@ -3,7 +3,9 @@
     <div class="clients-list">
       <div class="header-container">
         <h1>Clientes</h1>
-        <el-button type="primary" icon="el-icon-plus">Adicionar Cliente</el-button>
+        <router-link to="register-client">
+          <el-button type="primary" icon="el-icon-plus">Adicionar Cliente</el-button>
+        </router-link>
       </div>
       <el-table
         :data="clients"

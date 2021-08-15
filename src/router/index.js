@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import ClientsList from '../components/ClientsList.vue'
+import RegisterClient from '../components/RegisterClient.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -8,6 +9,10 @@ const router = createRouter({
         {
             path: '/',
             component: ClientsList
+        },
+        {
+            path: '/register-client',
+            component: RegisterClient
         }
     ]
 })
