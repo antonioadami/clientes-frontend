@@ -39,12 +39,12 @@
         <el-table-column
           label="Ações"
           width="120">
-          <template v-slot:default>
+          <template v-slot:default="cliente">
             <el-tooltip class="item" effect="dark" content="Editar" placement="top">
               <el-button type="primary" icon="el-icon-edit" circle></el-button>
             </el-tooltip>
             <el-tooltip class="item" effect="dark" content="Excluir" placement="top">
-              <el-button type="danger" icon="el-icon-delete" circle></el-button>
+              <el-button type="danger" icon="el-icon-delete" circle @click="deleteClient(cliente.row.cpf)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -64,13 +64,45 @@
       }
     },
     created() {
-      axios.get('http://localhost:3000/clients') 
-      .then(response => {
-        this.clients = response.data;
-      })
-      .catch(err => {
-        console.error(err);
-      })
+      this.listClients();
+    },
+    methods: {
+      listClients() {
+        axios.get('http://localhost:3000/clients') 
+        .then(response => {
+          this.clients = response.data;
+        })
+        .catch(err => {
+          console.error(err);
+        })
+      },
+      deleteClient(cpf) {
+        this.$confirm('Você tem certeza de que deseja excluir este cliente?', {
+          confirmButtonText: 'Sim',
+          cancelButtonText: 'Não',
+          type: 'warning'
+        })
+          .then(() => {
+            axios.delete(`http://localhost:3000/clients/${cpf}`) 
+              .then(() => {
+                this.listClients();
+                this.$message({
+                  showClose: true,
+                  message: 'Cliente excluído com sucesso.',
+                  type: 'success'
+                });
+              })
+              .catch(err => {
+                console.error(err);
+                this.$message({
+                  showClose: true,
+                  message:'Ocorreu um erro ao excluir o cliente',
+                  type: 'error'
+                });
+              })
+          })
+          .catch(() => {});
+      }
     }
   }
 </script>

@@ -88,18 +88,18 @@
                     axios.post('http://localhost:3000/clients', this.form) 
                     .then(() => {
                         this.$message({
-                            showClose: true,
-                            message: 'Cliente criado com sucesso.',
-                            type: 'success'
+                          showClose: true,
+                          message: 'Cliente criado com sucesso.',
+                          type: 'success'
                         });
                         this.$router.push('/')
                     })
                     .catch(err => {
                         console.error(err);
                         this.$message({
-                            showClose: true,
-                            message:'Ocorreu um erro ao criar o cliente',
-                            type: 'error'
+                          showClose: true,
+                          message:'Ocorreu um erro ao criar o cliente',
+                          type: 'error'
                         });
                     });
                 }
