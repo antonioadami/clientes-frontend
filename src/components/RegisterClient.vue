@@ -6,32 +6,38 @@
       </div>
 
       <div class="form-container">
-          <el-form ref="form" :model="form" :rules="rules" label-width="auto" label-position="right">
-            <el-form-item label="Nome" prop="name">
-                <el-input v-model="form.name"></el-input>
-            </el-form-item>
-            <el-form-item label="E-mail" prop="email">
-                <el-input v-model="form.email"></el-input>
-            </el-form-item>
-            <el-form-item label="Senha" prop="password" v-if="!cpf">
-                <el-input v-model="form.password"></el-input>
-            </el-form-item>
-            <el-form-item label="CPF" prop="cpf">
-                <el-input v-model="form.cpf" v-mask="'###.###.###-##'"></el-input>
-            </el-form-item>
-            <el-form-item label="Nascimento" prop="birth">
-                <el-date-picker type="date" placeholder="Selecione uma data" v-model="form.birth" style="width: 100%;" format="DD/MM/YYYY"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="Telefone" prop="phone">
-                <el-input v-model="form.phone" v-mask="['(##) ####-####', '(##) #####-####']"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <router-link to="/">
-                    <el-button>Cancelar</el-button>
-                </router-link>
-                <el-button type="primary" @click="onSubmit">Concluir</el-button>
-            </el-form-item>
-            </el-form>
+        <el-form ref="form" :model="form" :rules="rules" label-width="auto" label-position="right">
+          <el-form-item label="Nome" prop="name">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
+          <el-form-item label="E-mail" prop="email">
+            <el-input v-model="form.email"></el-input>
+          </el-form-item>
+          <el-form-item label="Senha" prop="password" v-if="!cpf">
+            <el-input v-model="form.password"></el-input>
+          </el-form-item>
+          <el-form-item label="CPF" prop="cpf">
+            <el-input v-model="form.cpf" v-mask="'###.###.###-##'"></el-input>
+          </el-form-item>
+          <el-form-item label="Nascimento" prop="birth">
+            <el-date-picker 
+              type="date" 
+              placeholder="Selecione uma data" 
+              v-model="form.birth" 
+              style="width: 100%;" 
+              format="DD/MM/YYYY"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="Telefone" prop="phone">
+            <el-input v-model="form.phone" v-mask="['(##) ####-####', '(##) #####-####']"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <router-link to="/">
+              <el-button>Cancelar</el-button>
+            </router-link>
+            <el-button type="primary" @click="onSubmit">Concluir</el-button>
+          </el-form-item>
+        </el-form>
       </div>
     </div>
   </div>
@@ -72,7 +78,7 @@
             { required: true, message: 'Você deve inserir o telefone', trigger: 'blur' }
           ],
         },
-        cpf: ''
+        cpf: '',
       }
     },
     methods: {
@@ -129,18 +135,20 @@
     created() {
       const { cpf } = this.$route.params;
       this.cpf = cpf;
-      axios.get(`http://localhost:3000/clients/${cpf}`, this.form)
-      .then(response => {
-        this.form.name = response.data.name;
-        this.form.email = response.data.email;
-        this.form.cpf = response.data.cpf;
-        this.form.phone = response.data.phone;
-        this.form.birth = new Date(response.data.birth);
-        console.log(response.data.birth);
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      if(cpf) {
+        axios.get(`http://localhost:3000/clients/${cpf}`, this.form)
+        .then(response => {
+          this.form.name = response.data.name;
+          this.form.email = response.data.email;
+          this.form.cpf = response.data.cpf;
+          this.form.phone = response.data.phone;
+          this.form.birth = new Date(response.data.birth);
+          console.log(response.data.birth);
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
     }
   }
 </script>
