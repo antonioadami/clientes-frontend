@@ -41,7 +41,7 @@
           width="120">
           <template v-slot:default="cliente">
             <el-tooltip class="item" effect="dark" content="Editar" placement="top">
-              <el-button type="primary" icon="el-icon-edit" circle></el-button>
+              <el-button type="primary" icon="el-icon-edit" circle @click="updateClient(cliente.row.cpf)"></el-button>
             </el-tooltip>
             <el-tooltip class="item" effect="dark" content="Excluir" placement="top">
               <el-button type="danger" icon="el-icon-delete" circle @click="deleteClient(cliente.row.cpf)"></el-button>
@@ -76,32 +76,37 @@
           console.error(err);
         })
       },
+      
       deleteClient(cpf) {
         this.$confirm('Você tem certeza de que deseja excluir este cliente?', {
           confirmButtonText: 'Sim',
           cancelButtonText: 'Não',
           type: 'warning'
         })
+        .then(() => {
+          axios.delete(`http://localhost:3000/clients/${cpf}`) 
           .then(() => {
-            axios.delete(`http://localhost:3000/clients/${cpf}`) 
-              .then(() => {
-                this.listClients();
-                this.$message({
-                  showClose: true,
-                  message: 'Cliente excluído com sucesso.',
-                  type: 'success'
-                });
-              })
-              .catch(err => {
-                console.error(err);
-                this.$message({
-                  showClose: true,
-                  message:'Ocorreu um erro ao excluir o cliente',
-                  type: 'error'
-                });
-              })
+            this.listClients();
+            this.$message({
+              showClose: true,
+              message: 'Cliente excluído com sucesso.',
+              type: 'success'
+            });
           })
-          .catch(() => {});
+          .catch(err => {
+            console.error(err);
+            this.$message({
+              showClose: true,
+              message:'Ocorreu um erro ao excluir o cliente',
+              type: 'error'
+            });
+          })
+        })
+        .catch(() => {});
+      },
+
+      updateClient(cpf) {
+        this.$router.push(`/update-client/${cpf}`)
       }
     }
   }

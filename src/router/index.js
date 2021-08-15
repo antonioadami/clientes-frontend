@@ -13,6 +13,10 @@ const router = createRouter({
         {
             path: '/register-client',
             component: RegisterClient
+        },
+        {
+            path: '/update-client/:cpf',
+            component: RegisterClient
         }
     ]
 })

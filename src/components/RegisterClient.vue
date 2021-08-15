@@ -13,7 +13,7 @@
             <el-form-item label="E-mail" prop="email">
                 <el-input v-model="form.email"></el-input>
             </el-form-item>
-            <el-form-item label="Senha" prop="password">
+            <el-form-item label="Senha" prop="password" v-if="!cpf">
                 <el-input v-model="form.password"></el-input>
             </el-form-item>
             <el-form-item label="CPF" prop="cpf">
@@ -71,40 +71,76 @@
           phone: [
             { required: true, message: 'Você deve inserir o telefone', trigger: 'blur' }
           ],
-        }
+        },
+        cpf: ''
       }
     },
     methods: {
-        onSubmit() {
-
-            this.$refs.form.validate((isValid) => {
-                if(!isValid) {
-                    this.$message({
-                        showClose: true,
-                        message:'Há campos invalidos',
-                        type: 'error'
-                    });
-                } else {
-                    axios.post('http://localhost:3000/clients', this.form) 
-                    .then(() => {
-                        this.$message({
-                          showClose: true,
-                          message: 'Cliente criado com sucesso.',
-                          type: 'success'
-                        });
-                        this.$router.push('/')
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        this.$message({
-                          showClose: true,
-                          message:'Ocorreu um erro ao criar o cliente',
-                          type: 'error'
-                        });
-                    });
-                }
-            })
-        }
+      onSubmit() {
+        this.$refs.form.validate((isValid) => {
+          if(!isValid) {
+              this.$message({
+                showClose: true,
+                message:'Há campos invalidos',
+                type: 'error'
+              });
+          } else {
+            if(!this.cpf) {
+              axios.post('http://localhost:3000/clients', this.form) 
+              .then(() => {
+                this.$message({
+                  showClose: true,
+                  message: 'Cliente criado com sucesso.',
+                  type: 'success'
+                });
+                this.$router.push('/')
+              })
+              .catch(err => {
+                console.error(err);
+                this.$message({
+                  showClose: true,
+                  message:'Ocorreu um erro ao criar o cliente',
+                  type: 'error'
+                });
+              });
+            } else {
+              axios.put(`http://localhost:3000/clients/${this.cpf}`, this.form) 
+              .then(() => {
+                this.$message({
+                  showClose: true,
+                  message: 'Cliente editado com sucesso.',
+                  type: 'success'
+                });
+                this.$router.push('/')
+              })
+              .catch(err => {
+                console.error(err);
+                this.$message({
+                  showClose: true,
+                  message:'Ocorreu um erro ao editar o cliente',
+                  type: 'error'
+                });
+              });
+            }
+          }
+        })
+      }
+    },
+    created() {
+      const { cpf } = this.$route.params;
+      this.cpf = cpf;
+      axios.get(`http://localhost:3000/clients/${cpf}`, this.form)
+      .then(response => {
+        this.form.name = response.data.name;
+        this.form.email = response.data.email;
+        this.form.cpf = response.data.cpf;
+        this.form.phone = response.data.phone;
+        this.form.birth = new Date(response.data.birth);
+        console.log(response.data.birth);
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   }
 </script>
