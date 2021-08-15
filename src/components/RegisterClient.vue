@@ -66,7 +66,7 @@
             { required: true, message: 'Você deve inserir o CPF', trigger: 'blur' }
           ],
           birth: [
-            { type: 'date', required: true, message: 'Você deve selecionar a data de nascimento', trigger: 'change' }
+            { type: 'date', required: true, message: 'Você deve selecionar a data', trigger: 'change' }
           ],
           phone: [
             { required: true, message: 'Você deve inserir o telefone', trigger: 'blur' }

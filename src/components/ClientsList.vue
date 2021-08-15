@@ -36,6 +36,18 @@
           label="CPF"
           width="170">
         </el-table-column>
+        <el-table-column
+          label="Ações"
+          width="120">
+          <template v-slot:default>
+            <el-tooltip class="item" effect="dark" content="Editar" placement="top">
+              <el-button type="primary" icon="el-icon-edit" circle></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="Excluir" placement="top">
+              <el-button type="danger" icon="el-icon-delete" circle></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
