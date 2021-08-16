@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  const axios = require('axios').default;
+  import axios from '../services/api';
 
   export default {
     name: 'ClientsList',
@@ -68,7 +68,7 @@
     },
     methods: {
       listClients() {
-        axios.get('http://localhost:3000/clients') 
+        axios.get(`/clients`) 
         .then(response => {
           this.clients = response.data;
         })
@@ -84,7 +84,7 @@
           type: 'warning'
         })
         .then(() => {
-          axios.delete(`http://localhost:3000/clients/${cpf}`) 
+          axios.delete(`/clients/${cpf}`) 
           .then(() => {
             this.listClients();
             this.$message({

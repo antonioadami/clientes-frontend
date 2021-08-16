@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  const axios = require('axios').default;
+  import axios from '../services/api';
 
   export default {
     name: 'RegisterClient',
@@ -92,7 +92,7 @@
               });
           } else {
             if(!this.cpf) {
-              axios.post('http://localhost:3000/clients', this.form) 
+              axios.post(`/clients`, this.form) 
               .then(() => {
                 this.$message({
                   showClose: true,
@@ -110,7 +110,7 @@
                 });
               });
             } else {
-              axios.put(`http://localhost:3000/clients/${this.cpf}`, this.form) 
+              axios.put(`/clients/${this.cpf}`, this.form) 
               .then(() => {
                 this.$message({
                   showClose: true,
@@ -136,7 +136,7 @@
       const { cpf } = this.$route.params;
       this.cpf = cpf;
       if(cpf) {
-        axios.get(`http://localhost:3000/clients/${cpf}`, this.form)
+        axios.get(`/clients/${cpf}`, this.form)
         .then(response => {
           this.form.name = response.data.name;
           this.form.email = response.data.email;
