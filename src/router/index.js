@@ -1,10 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 import ClientsList from '../components/ClientsList.vue'
 import RegisterClient from '../components/RegisterClient.vue'
 
+// import vueConfig from '../../vue.config'
+
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes: [
         {
             path: '/',
